@@ -129,7 +129,10 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
         try {
             if ($dateOnly) {
                 // we only care about year-month-date, which has been delivered as a timestamp pointing to UTC midnight
-                return new \DateTime(gmdate('Y-m-d', $timestamp), new \DateTimeZone($this->inputTimezone));
+                $dateTime = new \DateTime(gmdate('Y-m-d', $timestamp), new \DateTimeZone($this->outputTimezone));
+                $dateTime->setTimezone(new \DateTimeZone($this->inputTimezone));
+
+                return $dateTime;
             }
 
             // read timestamp into DateTime object - the formatter delivers a timestamp
